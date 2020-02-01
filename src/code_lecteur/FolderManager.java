@@ -27,7 +27,7 @@ import sun.java2d.loops.ProcessPath.EndSubPathHandler;
  * S'occupe de la gestion des fichiers
  */
 public class FolderManager {
-	
+	public static String appArgs;
 	private int imageNum;
 	String path=".";
 	String currentImageName;
@@ -38,11 +38,12 @@ public class FolderManager {
 	public final ObjectProperty<Image> currentImage = new SimpleObjectProperty<>();
 	
 	public FolderManager() throws FileNotFoundException {
-		currentImage.set(new Image(new FileInputStream(".\\pics\\p4.jpg")));  
-		
-		setPath(".\\pics\\p4.jpg");
-		System.out.println(path);
-		getFileImageList();
+		if(appArgs==null) {
+		String p=".\\pics\\p5.jpg";
+		setCurrentImage(p);
+		}
+		else
+			setCurrentImage(appArgs);
 	};
 	
 	public FolderManager(String n) {

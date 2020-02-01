@@ -235,7 +235,8 @@ public class ImageExample extends Application {
 	}  
 	public static void main(String args[]) { 
 		
-		// TODO: resizing dégueulasse
+		if(args.length>0)
+			FolderManager.appArgs=args[0];
 		launch(); 
 	} 
 }
