@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 
 public class ImageExample extends Application {  
 	/*	
-	 * @author: eudes chatin
+	 * @author: safirex
 	 * 
 	 * 
 	 * 
@@ -47,19 +47,13 @@ public class ImageExample extends Application {
 
 		FolderManager manager=new FolderManager();
 		
-		
-		
-		
-		
 		//String css = this.getClass().getResource("img/src//css/btn.css").toExternalForm(); 
-		
-		
 		
 		
 		//set the stage to max sized window
 		stage.setMaximized(true);
 		BorderPane p2=new BorderPane();
-		p2.setMinSize(stage.getWidth(), stage.getHeight());
+		//p2.setMinSize(stage.getWidth(), stage.getHeight());
 		
 
 		int height=(int) Screen.getPrimary().getBounds().getHeight();
@@ -96,8 +90,8 @@ public class ImageExample extends Application {
 		ImageView imageView = new ImageView(image); 
 
 		//setting the fit height and width of the image view 
-		imageView.setFitHeight((int)Math.min(image.getHeight(),p2.getHeight())); 
-		imageView.setFitWidth((int)Math.min(image.getWidth(),width)); 
+		//imageView.setFitHeight((int)Math.min(image.getHeight(),p2.getHeight())); 
+		//imageView.setFitWidth((int)Math.min(image.getWidth(),width)); 
 		//Setting the preserve ratio of the image view 
 		imageView.setPreserveRatio(true);  
 
@@ -107,18 +101,42 @@ public class ImageExample extends Application {
 		
 		Button gauche = new Button("<");
 		gauche.setMnemonicParsing(false);
-		gauche.setPrefWidth(width*0.2);
+		gauche.setPrefWidth(width*0.1);
 		gauche.setPrefHeight(height);
 		gauche.setOpacity(0); //rend le gauche invisible
 		//gauche.setStyle("myButton");
 		
+		//Example d'action on click
+		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+				manager.getPrecedingImage();
+		}});
+		gauche.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+			gauche.setOpacity(100);
+	}}));
+		gauche.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+			gauche.setOpacity(0);
+	}}));
+		
+		
+		
+		
 		Button droite = new Button(">");
 		droite.setMnemonicParsing(false);
-		droite.setPrefWidth(width*0.2);
+		droite.setPrefWidth(width*0.1);
 		droite.setPrefHeight(height);
 		droite.setOpacity(0);
+		//Example d'action on click
+		droite.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+				manager.getNextImage();
+				//stage.setTitle(manager.currentImage.getName());
+				System.out.println(manager.currentImage.getName());}});
 		
-		
+		droite.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+			droite.setOpacity(100);}}));
+		droite.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+			droite.setOpacity(0);}}));
+				
+				
 		//AnchorPane.setLeftAnchor(imageView, (double)0);
 		//AnchorPane.setLeftAnchor(gauche, (double)0);
 		
@@ -153,24 +171,12 @@ public class ImageExample extends Application {
 
 		
 		
-		//gauche.setOpacity(100);
 
 
 		
 		
 		
 
-		//Example d'action on click
-		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-				manager.getPrecedingImage();
-		}});
-
-		//Example d'action on click
-		droite.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-				manager.getNextImage();}});
-		
-		
-		
 		
 		
 		
@@ -214,7 +220,8 @@ public class ImageExample extends Application {
 		menuC.initModel(manager);	//permit communication between the menu and the controler/ folder manager
 		
 		//link the immageView of jfx with the image of folderManager
-		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());		
+		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
+		//define the image height in the GUI
 		imageView.fitHeightProperty().bind(scene.heightProperty());
 		
 		

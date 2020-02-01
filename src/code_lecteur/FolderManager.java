@@ -150,12 +150,11 @@ public class FolderManager {
 	
 	/**
 	 * will acces next image and load it in currentImage
-	 * @throws FileNotFoundException
 	 */
 	public void getNextImage()  {
 		try
 		{
-				if( imageNameArray.size()>=imageNum+1) {
+			if( imageNameArray.size()>imageNum+1) {
 				imageNum+=1;
 				setCurrentImage(path+"\\"+imageNameArray.get(imageNum));
 			}
@@ -163,9 +162,10 @@ public class FolderManager {
 			System.err.println("next image not found");
 		}
 	}
+	
+	
 	/**
-	 * will acces preceding image and load it in currentImage
-	 * @throws FileNotFoundException
+	 * will access preceding image and load it in currentImage
 	 */
 	public void getPrecedingImage() {
 		try
