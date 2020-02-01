@@ -1,4 +1,6 @@
 package ihm;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream; 
 import java.io.FileNotFoundException;
@@ -43,6 +45,10 @@ public class ImageExample extends Application {
 	@Override 
 	public void start(Stage stage) throws FileNotFoundException { 
 		
+		
+		
+		
+		
 		Controleur controleur=new Controleur();
 
 		FolderManager manager=new FolderManager();
@@ -56,10 +62,26 @@ public class ImageExample extends Application {
 		//p2.setMinSize(stage.getWidth(), stage.getHeight());
 		
 
-		int height=(int) Screen.getPrimary().getBounds().getHeight();
-		int width=(int) Screen.getPrimary().getBounds().getWidth(); 
+		int height=(int)	Screen.getPrimary().getBounds().getHeight();
+		int width=(int) 	Screen.getPrimary().getBounds().getWidth(); 
+
+		StackPane stack=new StackPane();
+
+		//Creating a Group object  
+		Group root = new Group(p2); 
 		
 		
+		//Creating a scene object 
+		Scene scene = new Scene(root, height, width);
+		//scene.getStylesheets().add(css);
+
+		//Setting title to the Stage 
+		stage.setTitle("Loading an image");  
+
+		//Adding scene to the stage 
+		stage.setScene(scene);
+
+
 
 		MenuBar menubar=new MenuBar();
 
@@ -82,29 +104,30 @@ public class ImageExample extends Application {
 		
 		
 		
+		double taskbarheight = Toolkit.getDefaultToolkit().getScreenSize().height 
+				- GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize().getHeight();
 		
-
-		//Creating an image 
+		//imageView settings
 		Image image = new Image(new FileInputStream(".\\pics\\p4.jpg"));  
-		//Setting the image view 
-		ImageView imageView = new ImageView(image); 
-
-		//setting the fit height and width of the image view 
-		//imageView.setFitHeight((int)Math.min(image.getHeight(),p2.getHeight())); 
-		//imageView.setFitWidth((int)Math.min(image.getWidth(),width)); 
+		ImageView imageView = new ImageView(image);
 		//Setting the preserve ratio of the image view 
 		imageView.setPreserveRatio(true);  
-
-		
 		imageView.fitWidthProperty().bind(stage.widthProperty());
+		imageView.fitHeightProperty().bind(scene.heightProperty().subtract(taskbarheight));
+		//setY(imageView.yProperty().get()+taskbarheight/2);
 		
 		
+		// imageview's left button settings and listener
 		Button gauche = new Button("<");
 		gauche.setMnemonicParsing(false);
 		gauche.setPrefWidth(width*0.1);
 		gauche.setPrefHeight(height);
 		gauche.setOpacity(0); //rend le gauche invisible
 		//gauche.setStyle("myButton");
+		
+
+		gauche.prefHeightProperty().bind(stack.heightProperty());
+		
 		
 		//Example d'action on click
 		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
@@ -116,10 +139,10 @@ public class ImageExample extends Application {
 		gauche.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			gauche.setOpacity(0);
 	}}));
+
 		
 		
-		
-		
+		// imageview's right button settings and listener
 		Button droite = new Button(">");
 		droite.setMnemonicParsing(false);
 		droite.setPrefWidth(width*0.1);
@@ -136,78 +159,34 @@ public class ImageExample extends Application {
 		droite.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			droite.setOpacity(0);}}));
 				
-				
-		//AnchorPane.setLeftAnchor(imageView, (double)0);
-		//AnchorPane.setLeftAnchor(gauche, (double)0);
-		
-
+		/*
 		AnchorPane anchor=new AnchorPane();
 		AnchorPane.setLeftAnchor(droite, 0.0);
 		anchor.getChildren().addAll(imageView,droite,gauche);
-		
+		*/
 		
 		
 
 		
 		
 		
+		
+		
+		//setting of stackpane (containing imageview and both buttons)
+		stack.getChildren().addAll(imageView,droite,gauche);
+		StackPane.setAlignment(imageView,Pos.CENTER);
+		StackPane.setAlignment(gauche, Pos.CENTER_LEFT);
+		StackPane.setAlignment(droite, Pos.TOP_RIGHT);
+		stack.autosize();
+		stack.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+		//stack.
 		
 		p2.setTop(menubar);
 		p2.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-	
-		//p2.setCenter(anchor);
-		
-
-		StackPane stack=new StackPane();
-		stack.getChildren().addAll(imageView,droite,gauche);
-		StackPane.setAlignment(imageView,Pos.TOP_CENTER);
-		StackPane.setAlignment(gauche, Pos.CENTER_LEFT);
-		StackPane.setAlignment(droite, Pos.TOP_RIGHT);
 		p2.setCenter(stack);
-		
-		
-		gauche.prefHeightProperty().bind(stack.heightProperty());
-		imageView.fitHeightProperty().bind(stage.heightProperty());
-
-		
-		
-
-
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		//Creating a Group object  
-		Group root = new Group(p2); 
-		
-		
-		//Creating a scene object 
-		Scene scene = new Scene(root, height, width);
-		//scene.getStylesheets().add(css);
-
-		//Setting title to the Stage 
-		stage.setTitle("Loading an image");  
-
-		//Adding scene to the stage 
-		stage.setScene(scene);
-
-
-		
 		p2.prefWidthProperty().bind(scene.widthProperty()); //put borderpane across all the screen
 		p2.prefHeightProperty().bind(scene.heightProperty());
-		stack.autosize();
+		
 
 		MenuController menuC=new MenuController(menubar);
 		open.setOnAction(new EventHandler<ActionEvent> () {
@@ -222,11 +201,8 @@ public class ImageExample extends Application {
 		//link the immageView of jfx with the image of folderManager
 		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
 		//define the image height in the GUI
-		imageView.fitHeightProperty().bind(scene.heightProperty());
 		
 		
-		
-		stack.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 		
 		//gauche.setStyle("-fx-background-color : #ffaadd;");
 
