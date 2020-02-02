@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="img">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="JUnit 5.libraryclasspath">
+        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.api_5.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.engine_5.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.migrationsupport_5.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.params_5.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.commons_1.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.engine_1.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.launcher_1.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.runner_1.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.suite.api_1.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit.vintage.engine_5.4.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.opentest4j_1.1.1.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.apiguardian_1.0.0.v20190212-2109.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+    </path>
+    <path id="img.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/javafx-swt.jar"/>
+        <pathelement location="libs/javafx.base.jar"/>
+        <pathelement location="libs/javafx.controls.jar"/>
+        <pathelement location="libs/javafx.fxml.jar"/>
+        <pathelement location="libs/javafx.graphics.jar"/>
+        <pathelement location="libs/javafx.media.jar"/>
+        <pathelement location="libs/javafx.swing.jar"/>
+        <pathelement location="libs/javafx.web.jar"/>
+        <pathelement location="libs/jfxrt.jar"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.ucls"/>
+                <exclude name="**/*.useq"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="test">
+                <exclude name="**/*.ucls"/>
+                <exclude name="**/*.useq"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="test"/>
+            <classpath refid="img.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="affichageImage (3)">
+        <java classname="ihm.affichageImage" failonerror="true" fork="yes">
+            <classpath refid="img.classpath"/>
+        </java>
+    </target>
+    <target name="Controleur (2)">
+        <java classname="controleur.Controleur" failonerror="true" fork="yes">
+            <classpath refid="img.classpath"/>
+        </java>
+    </target>
+    <target name="EnvMap">
+        <java classname="code_lecteur.EnvMap" failonerror="true" fork="yes">
+            <classpath refid="img.classpath"/>
+        </java>
+    </target>
+    <target name="FolderManager">
+        <java classname="code_lecteur.FolderManager" failonerror="true" fork="yes">
+            <classpath refid="img.classpath"/>
+        </java>
+    </target>
+    <target name="ImageExample (3)">
+        <java classname="ihm.ImageExample" failonerror="true" fork="yes">
+            <classpath refid="img.classpath"/>
+        </java>
+    </target>
+    <target name="TestFolderManager">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="code_lecteur.TestFolderManager" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="img.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
