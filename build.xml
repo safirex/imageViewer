@@ -70,11 +70,13 @@
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target name="affichageImage (3)">
-        <java classname="ihm.affichageImage" failonerror="true" fork="yes">
-            <classpath refid="img.classpath"/>
-        </java>
-    </target>
+   <!-- 
+   		<target name="affichageImage (3)">
+	        <java classname="ihm.affichageImage" failonerror="true" fork="yes">
+	            <classpath refid="img.classpath"/>
+	        </java>
+	    </target>
+    -->
     <target name="Controleur (2)">
         <java classname="controleur.Controleur" failonerror="true" fork="yes">
             <classpath refid="img.classpath"/>
