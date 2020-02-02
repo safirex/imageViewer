@@ -1,6 +1,9 @@
 package ihm;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+
 import code_lecteur.FolderManager;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
@@ -39,4 +42,12 @@ public class MenuController {
         }
     }
 
+	public void openDir() {
+		try {
+			Desktop.getDesktop().open(new File (model.getPath()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

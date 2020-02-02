@@ -88,9 +88,7 @@ public class FolderManager {
 		currentImageName=imagePath.substring(imagePath.lastIndexOf("\\")+1);
 		
 	}
-	public final String getPath() {
-		return path;
-	}
+	
 	public final ObjectProperty<Image> getCurrentImage() {
 		return currentImage;
 	}
@@ -121,7 +119,7 @@ public class FolderManager {
 	/**
 	 * add all images in a list and search the actual image index
 	 */
-	public void gestionImageList() {
+	/*public void gestionImageList() {
 		int i=0;							// give pos of actual image in the folder
 		imageNum=-1;
 		for(String f:imageNameList) {
@@ -132,7 +130,7 @@ public class FolderManager {
 		}
 		if (imageNum==-1)
 			imageNum=0;			
-	}
+	}*/
 	
 	/**
 	 * search the index of the current image 
@@ -180,7 +178,12 @@ public class FolderManager {
 		}
 	}
 	
-	
+	public final String getPath() {
+		return path;
+	}
+	public final String getImageName() {
+		return currentImageName;
+	}
 	
 	
 	public static void main(String[] args) throws IOException {

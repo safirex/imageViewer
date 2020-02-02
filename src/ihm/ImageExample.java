@@ -21,6 +21,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -29,6 +30,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.stage.Screen;
 import javafx.stage.Stage;  
 
@@ -49,11 +53,11 @@ public class ImageExample extends Application {
 		
 		
 		
-		Controleur controleur=new Controleur();
+		//Controleur controleur=new Controleur();
 
 		FolderManager manager=new FolderManager();
 		
-		//String css = this.getClass().getResource("img/src//css/btn.css").toExternalForm(); 
+		//String css = this.getClass().getResource(".\\src\\css\\btn.css").toExternalForm(); 
 		
 		
 		//set the stage to max sized window
@@ -82,30 +86,39 @@ public class ImageExample extends Application {
 		stage.setScene(scene);
 
 
-
+		//top screen menuBar & menu settings. listeners are at end of file
 		MenuBar menubar=new MenuBar();
 
 		Menu edit=new Menu("Edit");
 		Menu help =new Menu("Help");
-
 		Menu file=new Menu("File");
-		//MenuItem New=new MenuItem("New");
+		Menu acces=new Menu("Rapid Access");
+		
 		MenuItem open=new MenuItem("open");
+		MenuItem openDir=new MenuItem("open directory");
 		MenuItem save=new MenuItem("Save");
 		MenuItem saveas=new MenuItem("Save as");
-		menubar.getMenus().addAll(file,edit,help);
-		
-		
-		
-		
 		
 		file.setMnemonicParsing(false);				//ne met pas de séparation entre les items
-		file.getItems().addAll(/*New,*/	open,save,saveas);
+		file.getItems().addAll(/*New,*/	open,openDir,save,saveas);
+		
+		menubar.getMenus().addAll(file,edit,acces,help);	
+		
+		
+		
 		
 		
 		
 		double taskbarheight = Toolkit.getDefaultToolkit().getScreenSize().height 
 				- GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize().getHeight();
+		
+		
+		Popup leftClick= new Popup();
+		leftClick.setHideOnEscape(true);
+		PopupWindow popupWindow = new PopupWindow() {
+		};
+		
+		
 		
 		//imageView settings
 		Image image = new Image(new FileInputStream(".\\pics\\p4.jpg"));  
@@ -114,7 +127,22 @@ public class ImageExample extends Application {
 		imageView.setPreserveRatio(true);  
 		imageView.fitWidthProperty().bind(stage.widthProperty());
 		imageView.fitHeightProperty().bind(scene.heightProperty().subtract(taskbarheight));
-		//setY(imageView.yProperty().get()+taskbarheight/2);
+		imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
+			if (event.getButton()==MouseButton.SECONDARY)
+			{
+				//stack.getChildren().add(popupWindow);
+				popupWindow.setAnchorX(event.getX());
+				popupWindow.setAnchorY(event.getY());
+			}
+		}});
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		// imageview's left button settings and listener
@@ -124,14 +152,13 @@ public class ImageExample extends Application {
 		gauche.setPrefHeight(height);
 		gauche.setOpacity(0); //rend le gauche invisible
 		//gauche.setStyle("myButton");
-		
-
 		gauche.prefHeightProperty().bind(stack.heightProperty());
 		
 		
 		//Example d'action on click
 		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 				manager.getPrecedingImage();
+				stage.setTitle(manager.getImageName());
 		}});
 		gauche.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			gauche.setOpacity(100);
@@ -140,6 +167,7 @@ public class ImageExample extends Application {
 			gauche.setOpacity(0);
 	}}));
 
+		//gauche.setStyle("-fx-background-color : #ffaadd;");=
 		
 		
 		// imageview's right button settings and listener
@@ -151,8 +179,7 @@ public class ImageExample extends Application {
 		//Example d'action on click
 		droite.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 				manager.getNextImage();
-				//stage.setTitle(manager.currentImage.getName());
-				System.out.println(manager.currentImage.getName());}});
+				stage.setTitle(manager.getImageName());}});
 		
 		droite.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			droite.setOpacity(100);}}));
@@ -179,7 +206,10 @@ public class ImageExample extends Application {
 		StackPane.setAlignment(droite, Pos.TOP_RIGHT);
 		stack.autosize();
 		stack.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-		//stack.
+		
+		
+	
+		
 		
 		p2.setTop(menubar);
 		p2.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -194,18 +224,19 @@ public class ImageExample extends Application {
 			public void handle(ActionEvent event) {
 				menuC.open();
 		}});
+		openDir.setOnAction(new EventHandler<ActionEvent> () {
+			@Override
+			public void handle(ActionEvent event) {
+				menuC.openDir();
+		}});
 		
 		
 		menuC.initModel(manager);	//permit communication between the menu and the controler/ folder manager
 		
 		//link the immageView of jfx with the image of folderManager
 		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
-		//define the image height in the GUI
 		
 		
-		
-		//gauche.setStyle("-fx-background-color : #ffaadd;");
-
 		//Displaying the contents of the stage 
 		stage.show(); 
 	}  
