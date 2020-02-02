@@ -68,7 +68,6 @@ public class ImageExample extends Application {
 
 		int height=(int)	Screen.getPrimary().getBounds().getHeight();
 		int width=(int) 	Screen.getPrimary().getBounds().getWidth(); 
-
 		StackPane stack=new StackPane();
 
 		//Creating a Group object  
@@ -99,7 +98,7 @@ public class ImageExample extends Application {
 		MenuItem save=new MenuItem("Save");
 		MenuItem saveas=new MenuItem("Save as");
 		
-		file.setMnemonicParsing(false);				//ne met pas de séparation entre les items
+		file.setMnemonicParsing(false);				//ne met pas de separation entre les items
 		file.getItems().addAll(/*New,*/	open,openDir,save,saveas);
 		
 		menubar.getMenus().addAll(file,edit,acces,help);	
