@@ -231,6 +231,7 @@ public class ImageExample extends Application {
 		
 		menuC.initModel(manager);	//permit communication between the menu and the controler/ folder manager
 		
+		
 		//link the immageView of jfx with the image of folderManager
 		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
 		
