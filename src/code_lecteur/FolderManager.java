@@ -99,13 +99,12 @@ public class FolderManager {
 	public void getFileImageList() {
 		File dir=new File(path);
 		imageNameList=  dir.list(new FilenameFilter() {
-			
-		    public boolean accept(File dir, String name) {
-		    	String nom=name.toLowerCase();
-		        return nom.endsWith(".jpg" ) 
-		        		 || nom.endsWith(".png" )
-		        		 || nom.endsWith(".gif");
-		    }
+						    public boolean accept(File dir, String name) {
+						    	String nom=name.toLowerCase();
+						        return nom.endsWith(".jpg" ) 
+						        		 || nom.endsWith(".png" )
+						        		 || nom.endsWith(".gif");
+						    }
 		}); 
 		
 		imageNameArray=new ArrayList<String>();

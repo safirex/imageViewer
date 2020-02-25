@@ -36,14 +36,13 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Screen;
 import javafx.stage.Stage;  
 
+/**
+ * 
+ * @author Xxsafirex
+ *
+ */
 public class ImageExample extends Application {  
-	/*	
-	 * @author: safirex
-	 * 
-	 * 
-	 * 
-	 */
-
+		
 
 
 	@Override 
@@ -65,7 +64,7 @@ public class ImageExample extends Application {
 		BorderPane p2=new BorderPane();
 		//p2.setMinSize(stage.getWidth(), stage.getHeight());
 		
-
+		
 		int height=(int)	Screen.getPrimary().getBounds().getHeight();
 		int width=(int) 	Screen.getPrimary().getBounds().getWidth(); 
 		StackPane stack=new StackPane();

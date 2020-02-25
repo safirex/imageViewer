@@ -7,7 +7,11 @@ import java.io.IOException;
 import code_lecteur.FolderManager;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
-
+ /**
+  * 
+  * @author Xxsafirex
+  *
+  */
 public class MenuController {
 	private MenuBar menuBar ;
 	
