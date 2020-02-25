@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import sun.java2d.loops.ProcessPath.EndSubPathHandler;
 
 /**
+ * @author Xxsafirex
  * S'occupe de la gestion des fichiers
  */
 public class FolderManager {
