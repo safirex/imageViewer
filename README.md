@@ -4,5 +4,5 @@ A simple and basic image viewer with minimal fonctionnality and performance cost
 * PNG
 * BMP
 * GIF
-(defined by Image class of java)
+<br>(defined by Image class from java)
  
