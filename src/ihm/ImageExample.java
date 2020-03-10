@@ -1,9 +1,14 @@
 package ihm;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream; 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.omg.CORBA.Environment;
 
 import code_lecteur.FolderManager;
 import controleur.Controleur;
@@ -241,8 +246,11 @@ public class ImageExample extends Application {
 	}  
 	public static void main(String args[]) { 
 		
-		if(args.length>0)
+		if(args.length>0) {
+		
 			FolderManager.appArgs=args[0];
+			
+		}
 		launch(); 
 	} 
 }

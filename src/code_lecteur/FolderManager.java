@@ -1,19 +1,15 @@
 package code_lecteur;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
@@ -21,11 +17,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
-import sun.java2d.loops.ProcessPath.EndSubPathHandler;
 
 /**
- * @author Xxsafirex
+ * 
  * S'occupe de la gestion des fichiers
+ * 
+ * @author Xxsafirex
+ * 
+ * 
  */
 public class FolderManager {
 	public static String appArgs;
@@ -85,6 +84,15 @@ public class FolderManager {
 	 * @param imagePath path de l'image, pas celui du dossier voulu
 	 */
 	public final void setPath(String imagePath) {
+		try {
+		    BufferedWriter writer =new BufferedWriter(new FileWriter(".\\log.txt"));
+			writer.write(imagePath);	
+		    writer.close();
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		this.path=imagePath.substring(0, imagePath.lastIndexOf("\\")); //path = path of file - file name
 		currentImageName=imagePath.substring(imagePath.lastIndexOf("\\")+1);
 		
