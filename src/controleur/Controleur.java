@@ -1,8 +1,7 @@
 package controleur;
 
-import code_lecteur.FileReader;
+
 import code_lecteur.FolderManager;
-import code_lecteur.ImageReader;
 import ihm.ImageExample;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;

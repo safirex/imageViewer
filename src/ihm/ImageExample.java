@@ -26,13 +26,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
@@ -68,6 +72,8 @@ public class ImageExample extends Application {
 		stage.setMaximized(true);
 		BorderPane p2=new BorderPane();
 		//p2.setMinSize(stage.getWidth(), stage.getHeight());
+		
+	
 		
 		
 		int height=(int)	Screen.getPrimary().getBounds().getHeight();
@@ -128,7 +134,7 @@ public class ImageExample extends Application {
 		ImageView imageView = new ImageView(image);
 		//Setting the preserve ratio of the image view 
 		imageView.setPreserveRatio(true);  
-		imageView.fitWidthProperty().bind(stage.widthProperty());
+		imageView.fitWidthProperty().bind(stage.widthProperty().subtract(taskbarheight));
 		imageView.fitHeightProperty().bind(scene.heightProperty().subtract(taskbarheight));
 		imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			if (event.getButton()==MouseButton.SECONDARY)
@@ -151,24 +157,21 @@ public class ImageExample extends Application {
 		// imageview's left button settings and listener
 		Button gauche = new Button("<");
 		gauche.setMnemonicParsing(false);
-		gauche.setPrefWidth(width*0.1);
+		gauche.setPrefWidth(scene.getWidth()*0.1);
 		gauche.setPrefHeight(height);
 		gauche.setOpacity(0); //rend le gauche invisible
 		//gauche.setStyle("myButton");
 		gauche.prefHeightProperty().bind(stack.heightProperty());
-		
+	
 		
 		//Example d'action on click
 		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 				manager.getPrecedingImage();
-				stage.setTitle(manager.getImageName());
-		}});
+				stage.setTitle(manager.getImageName());		}});
 		gauche.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-			gauche.setOpacity(100);
-	}}));
+			gauche.setOpacity(30);}}));
 		gauche.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-			gauche.setOpacity(0);
-	}}));
+			gauche.setOpacity(0);	}}));
 
 		//gauche.setStyle("-fx-background-color : #ffaadd;");=
 		
@@ -176,7 +179,7 @@ public class ImageExample extends Application {
 		// imageview's right button settings and listener
 		Button droite = new Button(">");
 		droite.setMnemonicParsing(false);
-		droite.setPrefWidth(width*0.1);
+		droite.setPrefWidth(scene.getWidth()*0.1);
 		droite.setPrefHeight(height);
 		droite.setOpacity(0);
 		//Example d'action on click
@@ -185,15 +188,10 @@ public class ImageExample extends Application {
 				stage.setTitle(manager.getImageName());}});
 		
 		droite.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-			droite.setOpacity(100);}}));
+			droite.setOpacity(30);}}));
 		droite.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			droite.setOpacity(0);}}));
 				
-		/*
-		AnchorPane anchor=new AnchorPane();
-		AnchorPane.setLeftAnchor(droite, 0.0);
-		anchor.getChildren().addAll(imageView,droite,gauche);
-		*/
 		
 		
 
@@ -209,8 +207,6 @@ public class ImageExample extends Application {
 		StackPane.setAlignment(droite, Pos.TOP_RIGHT);
 		stack.autosize();
 		stack.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-		
-		
 	
 		
 		
@@ -219,8 +215,55 @@ public class ImageExample extends Application {
 		p2.setCenter(stack);
 		p2.prefWidthProperty().bind(scene.widthProperty()); //put borderpane across all the screen
 		p2.prefHeightProperty().bind(scene.heightProperty());
-		
+		p2.setOnDragOver(new EventHandler<DragEvent>() {
 
+            @Override
+            public void handle(DragEvent event) {
+            	
+            	// si la source n'est pas la target
+                if (event.getGestureSource() != p2
+                        && event.getDragboard().hasFiles()) {
+                    /* allow for both copying and moving, whatever user chooses */
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+                event.consume();
+            }
+        });
+
+        p2.setOnDragDropped(new EventHandler<DragEvent>() {
+
+            @Override
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasFiles()) {
+                	String filename=db.getFiles().toString();
+                	File file=db.getFiles().get(db.getFiles().size()-1);
+                	try {
+						manager.setCurrentImage(file.getAbsolutePath());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						manager.getPrecedingImage();
+					}
+                	
+                	System.out.println(db.getFiles().toString());
+                	System.out.println(db.getImage().getHeight());
+                	
+                	
+                    //dropped.setText(db.getFiles().toString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+
+                event.consume();
+            }
+        });
+
+		
+		
 		MenuController menuC=new MenuController(menubar);
 		open.setOnAction(new EventHandler<ActionEvent> () {
 			@Override
@@ -241,6 +284,11 @@ public class ImageExample extends Application {
 		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
 		
 		
+		
+		
+		
+		
+		
 		//Displaying the contents of the stage 
 		stage.show(); 
 	}  
@@ -253,4 +301,7 @@ public class ImageExample extends Application {
 		}
 		launch(); 
 	} 
+	
+	
+	
 }
