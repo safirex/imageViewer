@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import org.omg.CORBA.Environment;
-
 import code_lecteur.FolderManager;
 import controleur.Controleur;
 import javafx.application.Application;
@@ -46,9 +44,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;  
 
 /**
- * 
  * @author Xxsafirex
- *
  */
 public class ImageExample extends Application {  
 		
@@ -56,7 +52,6 @@ public class ImageExample extends Application {
 
 	@Override 
 	public void start(Stage stage) throws FileNotFoundException { 
-		
 		
 		
 		
@@ -130,8 +125,8 @@ public class ImageExample extends Application {
 		
 		
 		//imageView settings
-		Image image = new Image(new FileInputStream(".\\pics\\p4.jpg"));  
-		ImageView imageView = new ImageView(image);
+		//Image image = new Image(new FileInputStream(".\\pics\\p4.jpg"));  
+		ImageView imageView = new ImageView();
 		//Setting the preserve ratio of the image view 
 		imageView.setPreserveRatio(true);  
 		imageView.fitWidthProperty().bind(stage.widthProperty().subtract(taskbarheight));
@@ -194,7 +189,7 @@ public class ImageExample extends Application {
 				
 		
 		
-
+		
 		
 		
 		
@@ -215,8 +210,9 @@ public class ImageExample extends Application {
 		p2.setCenter(stack);
 		p2.prefWidthProperty().bind(scene.widthProperty()); //put borderpane across all the screen
 		p2.prefHeightProperty().bind(scene.heightProperty());
+		
+		
 		p2.setOnDragOver(new EventHandler<DragEvent>() {
-
             @Override
             public void handle(DragEvent event) {
             	
@@ -257,11 +253,9 @@ public class ImageExample extends Application {
                 /* let the source know whether the string was successfully 
                  * transferred and used */
                 event.setDropCompleted(success);
-
                 event.consume();
             }
         });
-
 		
 		
 		MenuController menuC=new MenuController(menubar);
@@ -279,7 +273,7 @@ public class ImageExample extends Application {
 		
 		menuC.initModel(manager);	//permit communication between the menu and the controler/ folder manager
 		
-		
+		//System.out.println("np"); this one works
 		//link the immageView of jfx with the image of folderManager
 		Bindings.bindBidirectional(imageView.imageProperty(),manager.getCurrentImage());
 		

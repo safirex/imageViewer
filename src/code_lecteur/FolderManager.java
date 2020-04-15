@@ -39,8 +39,9 @@ public class FolderManager {
 	
 	public FolderManager() throws FileNotFoundException {
 		if(appArgs==null) {
-		String p=".\\pics\\p5.jpg";
-		setCurrentImage(p);
+		String p="";
+		//setCurrentImage(p);
+		
 		}
 		else
 			setCurrentImage(appArgs);
@@ -65,15 +66,15 @@ public class FolderManager {
 	
 	public final void setCurrentImage(String path) throws FileNotFoundException {
 		setPath(path);
-		
         currentImage.set(new Image(new FileInputStream(path))); 
         //System.out.println(currentImage.getName());
-        
         getFileImageList();
         imageSearch();
-       
     }
 	
+	public final void setDefaultImage() {
+		currentImage.set(new Image(""));
+	}
 	
 	public final void setImageList() {
 		
