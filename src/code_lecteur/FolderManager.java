@@ -33,6 +33,8 @@ public class FolderManager {
 	String currentImageName;
 	String[] imageNameList= {""};
 	List<String> imageNameArray;
+	Boolean nextExists =false, precedentExists =false;
+	
 	private final ObservableList<Image> imgList = FXCollections.observableArrayList(image -> 
     												new Observable[] {(Observable) image});
 	public final ObjectProperty<Image> currentImage = new SimpleObjectProperty<>();
@@ -70,6 +72,8 @@ public class FolderManager {
         //System.out.println(currentImage.getName());
         getFileImageList();
         imageSearch();
+        lookForNextImage();
+        lookForPrecedent();
     }
 	
 	public final void setDefaultImage() {
@@ -155,6 +159,18 @@ public class FolderManager {
 		}
 	}
 	
+	
+	
+	
+	public void lookForNextImage() {
+		if(imageNameArray.size()>imageNum+1)
+			nextExists=true;
+	}
+	
+	public void lookForPrecedent() {
+		if(imageNum-1>=0 && ! imageNameArray.isEmpty()) 
+			precedentExists=true;
+	}
 	
 	/**
 	 * will acces next image and load it in currentImage

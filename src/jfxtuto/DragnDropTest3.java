@@ -13,7 +13,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class DragDropTest extends Application { 
+public class DragnDropTest3 extends Application { 
 	  
     @Override 
     public void start(Stage primaryStage) { 
