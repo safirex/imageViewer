@@ -76,6 +76,20 @@ public class FolderManager {
         lookForPrecedent();
     }
 	
+	
+	/**
+	 * change the current folder and loads the first image of the folder
+	 * @param path
+	 */
+	public void setCurrentFolder(String path) {
+		this.path=path+'\\';
+		try {
+			setCurrentImage(this.path+imageNameArray.get(0));
+		}catch (Exception e) {
+			System.err.println(e);
+		}
+	}
+	
 	public final void setDefaultImage() {
 		currentImage.set(new Image(""));
 	}
@@ -89,15 +103,6 @@ public class FolderManager {
 	 * @param imagePath path de l'image, pas celui du dossier voulu
 	 */
 	public final void setPath(String imagePath) {
-		try {
-		    BufferedWriter writer =new BufferedWriter(new FileWriter(".\\log.txt"));
-			writer.write(imagePath);	
-		    writer.close();
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		
 		this.path=imagePath.substring(0, imagePath.lastIndexOf("\\")); //path = path of file - file name
 		currentImageName=imagePath.substring(imagePath.lastIndexOf("\\")+1);
 		
@@ -110,7 +115,7 @@ public class FolderManager {
 	 * find all images of folder and put them in
 	 * imageNameList and imageNameArray
 	 */
-	public void getFileImageList() {
+	public List getFileImageList() {
 		File dir=new File(path);
 		imageNameList=  dir.list(new FilenameFilter() {
 						    public boolean accept(File dir, String name) {
@@ -126,24 +131,9 @@ public class FolderManager {
 			imageNameArray.add(f);
 		}
 		
-		
+		return imageNameArray;
 	}
 	
-	/**
-	 * add all images in a list and search the actual image index
-	 */
-	/*public void gestionImageList() {
-		int i=0;							// give pos of actual image in the folder
-		imageNum=-1;
-		for(String f:imageNameList) {
-			imgList.add(i,new Image(path+"\\"+f));	//ajoute toutes les images du folder dans la liste, brainless et couteux
-			if(f==currentImage.getName())
-				imageNum=i;
-			i++;
-		}
-		if (imageNum==-1)
-			imageNum=0;			
-	}*/
 	
 	/**
 	 * search the index of the current image 

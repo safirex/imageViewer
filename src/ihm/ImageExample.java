@@ -187,16 +187,17 @@ public class ImageExample extends Application {
 				
 				
 				Image tmp=imageView.getImage();
-				double coef=tmp.heightProperty().doubleValue()/tmp.widthProperty().doubleValue();
-				System.out.println("coef imgv "+imageView.getFitHeight()/imageView.getFitWidth());
+				double coef=(imageView.fitHeightProperty().doubleValue()/imageView.fitWidthProperty().doubleValue());
+				System.out.println("coef imgv "+coef);
 				double scrollY=event.getDeltaY();
 				double actualY=imageView.getTranslateY();
 				System.out.println(actualY+scrollY);
-				double finalTransformValue=Math.max(
+				double finalTransformValue=
+					Math.max(
 						Math.min(taskbarheight,actualY+scrollY),
-						-(imageView.getFitHeight()*Math.min(1,coef)-height+taskbarheight)
+						-(tmp.getHeight()/coef)
 						);
-				System.out.println("height "+height);
+				
 				System.out.println("tail img "+imageView.getImage().getHeight());
 				imageView.setTranslateY(finalTransformValue);
 				menubar.toFront();
@@ -223,7 +224,9 @@ public class ImageExample extends Application {
 		gauche.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			//imageView.getImage().cancel();
 			manager.getPrecedingImage();
-			stage.setTitle(manager.getImageName());		}});
+			stage.setTitle(manager.getImageName());	
+			if(readerMode)
+				imageView.setTranslateY(taskbarheight);	}});
 		gauche.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			gauche.setOpacity(30);}}));
 		gauche.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
@@ -241,13 +244,18 @@ public class ImageExample extends Application {
 		//Example d'action on click
 		droite.setOnMouseClicked(new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
 			manager.getNextImage();
-			stage.setTitle(manager.getImageName());}});
+			stage.setTitle(manager.getImageName());
+			if(readerMode)
+				imageView.setTranslateY(taskbarheight);}});
 
-		droite.setOnMouseEntered((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-			droite.setOpacity(30);}}));
-		droite.setOnMouseExited((new EventHandler<MouseEvent>(){@Override public void handle(MouseEvent event) {
-			droite.setOpacity(0);}}));
-
+		droite.setOnMouseEntered(event->{
+			droite.setOpacity(30);
+		});
+		
+		droite.setOnMouseExited(event-> {
+			droite.setOpacity(0);
+			
+		});
 
 
 
@@ -287,24 +295,33 @@ public class ImageExample extends Application {
 			}
 		});
 
-		p2.setOnDragDropped(new EventHandler<DragEvent>() {
+		p2.setOnDragDropped(new EventHandler<DragEvent >() {
 			@Override
 			public void handle(DragEvent event) {
 				Dragboard db = event.getDragboard();
 				boolean success = false;
+				
+				
+				
 				if (db.hasFiles()) {
 					String filename=db.getFiles().toString();
-					File file=db.getFiles().get(db.getFiles().size()-1);
+					File file=db.getFiles().get(0);
+					if(file.isFile() && file.canRead()) {
 					try {
 						manager.setCurrentImage(file.getAbsolutePath());
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						manager.getPrecedingImage();
 					}
-
-					System.out.println(db.getFiles().toString());
-					System.out.println(db.getImage().getHeight());
+					}
+					else if(file.isDirectory()) {
+						try {
+							System.out.println(file.getAbsolutePath());
+							manager.setCurrentFolder(file.getAbsolutePath());
+						} catch (Exception e2) {
+							// TODO: handle exception
+						}
+					}
 
 
 					//dropped.setText(db.getFiles().toString());
