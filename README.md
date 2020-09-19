@@ -1,4 +1,6 @@
+![](https://travis-ci.org/safirex/imageViewer.svg?branch=master)
 # imageViewer
+
 A lightweight image viewer with minimal fonctionnality and performance cost developped in java and javaFX.<br>Works for followed file extensions:
 * JPEG
 * PNG
