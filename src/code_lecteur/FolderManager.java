@@ -81,12 +81,15 @@ public class FolderManager {
 	 * change the current folder and loads the first image of the folder
 	 * @param path
 	 */
-	public void setCurrentFolder(String path) {
+	public void setCurrentFolder(String path) throws Exception{
 		this.path=path+'\\';
+		getFileImageList();
 		try {
+			System.out.println(this.path+imageNameArray.get(0));
 			setCurrentImage(this.path+imageNameArray.get(0));
 		}catch (Exception e) {
 			System.err.println(e);
+			throw e;
 		}
 	}
 	

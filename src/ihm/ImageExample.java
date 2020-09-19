@@ -308,6 +308,7 @@ public class ImageExample extends Application {
 					File file=db.getFiles().get(0);
 					if(file.isFile() && file.canRead()) {
 					try {
+						System.out.println(file.getAbsolutePath());
 						manager.setCurrentImage(file.getAbsolutePath());
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -316,9 +317,13 @@ public class ImageExample extends Application {
 					}
 					else if(file.isDirectory()) {
 						try {
-							System.out.println(file.getAbsolutePath());
 							manager.setCurrentFolder(file.getAbsolutePath());
 						} catch (Exception e2) {
+							try {
+								manager.setCurrentFolder(file.getCanonicalPath());
+							}catch(Exception e) {
+								
+							}
 							// TODO: handle exception
 						}
 					}
